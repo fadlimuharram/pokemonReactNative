@@ -6,6 +6,7 @@ const { LOGIN, REGISTER, LOGOUT } = userConstants;
 const full_uri = api_url + "users/";
 
 export const login = (email, password) => dispatch => {
+  // alert(full_uri);
   dispatch({
     type: LOGIN,
     payload: axios.post(full_uri + "login", { email, password })

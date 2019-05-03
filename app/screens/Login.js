@@ -18,7 +18,7 @@ export default class Login extends Component {
     header: null
   };
   state = {
-    email: "fadli@tes.com",
+    email: "fadlimuharram@tes.com",
     password: "fadli123456"
   };
   toRegister = () => {

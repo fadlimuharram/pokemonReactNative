@@ -34,9 +34,10 @@ export default class Register extends Component {
     this.props.register({
       username,
       email,
-      password
+      password,
+      confirm_password
     });
-    this.props.navigation.navigate("Chats");
+    this.props.navigation.navigate("App");
   };
 
   toLogin = () => {

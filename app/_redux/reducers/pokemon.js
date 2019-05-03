@@ -12,6 +12,12 @@ const {
 
 const INITIAL_STATE = {
   data: [],
+  pagination: {
+    total: 0,
+    perPage: 0,
+    page: 0,
+    lastPage: 0
+  },
   detail: {},
   isLoading: false,
   updateLoading: false,
@@ -21,12 +27,29 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
+  let newData = [];
   switch (action.type) {
     case GET_ALL_POKEMON + "_FULFILLED":
+      let result = [];
+      // alert(action.payload.data.page);
+      if (action.payload.data.page === 1) {
+        // alert("first");
+        result = action.payload.data.data;
+      } else {
+        // alert("page");
+        result = [...state.data, ...action.payload.data.data];
+      }
+
       return {
         ...state,
         isLoading: false,
-        data: action.payload.data.rows
+        data: result,
+        pagination: {
+          total: action.payload.data.total,
+          perPage: action.payload.data.perPage,
+          page: action.payload.data.page,
+          lastPage: action.payload.data.lastPage
+        }
       };
     case GET_ALL_POKEMON + "_PENDING":
       return {
@@ -67,12 +90,25 @@ export default (state = INITIAL_STATE, action) => {
         isLoading: true
       };
     case POST_POKEMON + "_FULFILLED":
-      return {
-        ...state
-      };
-    case UPDATE_POKEMON + "_FULFILLED":
+      newData = state.data;
+      newData.splice(0, 0, action.payload.data.data);
+
       return {
         ...state,
+        data: newData
+      };
+    case UPDATE_POKEMON + "_FULFILLED":
+      newData = state.data.map(val => {
+        if (val.id === action.payload.data.data.id) {
+          return action.payload.data.data;
+        } else {
+          return val;
+        }
+      });
+
+      return {
+        ...state,
+        data: newData,
         updateLoading: false
       };
     case UPDATE_POKEMON + "_PENDING":

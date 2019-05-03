@@ -14,10 +14,36 @@ const {
 
 const full_uri = api_url + "pokemon";
 
-export const getAllPokemon = () => dispatch => {
+export const getAllPokemon = (page = 1) => dispatch => {
   dispatch({
     type: GET_ALL_POKEMON,
-    payload: axios.get(full_uri)
+    payload: axios.get(full_uri + "?page=" + page + "&sort=-id")
+  });
+};
+
+export const getSearchPokemon = (
+  page = 1,
+  search = "",
+  types = "",
+  category = ""
+) => dispatch => {
+  let queryStr = "";
+
+  if (search && search !== "") {
+    queryStr += `&search=${search}`;
+  }
+
+  if (types && Object.entries(types).length !== 0) {
+    queryStr += `&type_in=[${types}]`;
+  }
+
+  if (category) {
+    queryStr += `&category_id=${category}`;
+  }
+
+  dispatch({
+    type: GET_ALL_POKEMON,
+    payload: axios.get(full_uri + "?page=" + page + queryStr + "&sort=-id")
   });
 };
 
@@ -29,6 +55,7 @@ export const getDetailPokemon = id => dispatch => {
 };
 
 export const getAllCategories = () => dispatch => {
+  // alert(api_url);
   dispatch({
     type: GET_ALL_CATEGORY,
     payload: axios.get(api_url + "categories")

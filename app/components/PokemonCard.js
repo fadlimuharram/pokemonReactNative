@@ -4,6 +4,7 @@ import { Card, CardItem, Left, Text, Body } from "native-base";
 import { api_picture } from "react-native-dotenv";
 
 const PokemonCard = ({ category, name, img, onPress }) => {
+  // alert(`${api_picture}${img}`);
   return (
     <TouchableOpacity onPress={onPress}>
       <Card>
@@ -18,7 +19,7 @@ const PokemonCard = ({ category, name, img, onPress }) => {
         <CardItem cardBody>
           <Image
             source={{ uri: `${api_picture}${img}` }}
-            style={{ height: 200, width: null, flex: 1 }}
+            style={{ height: 100, width: null, flex: 1 }}
           />
         </CardItem>
       </Card>

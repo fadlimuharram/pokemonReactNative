@@ -11,7 +11,11 @@ export default createStackNavigator({
     screen: TabNav
   },
   Detail: {
-    screen: Pokemon
+    screen: Pokemon,
+    navigationOptions: {
+      headerVisible: false,
+      header: null
+    }
   },
   Edit: {
     screen: EditPokemon

@@ -30,6 +30,25 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         ...INITIAL_STATE
       };
+
+    case REGISTER + "_PENDING":
+      return {
+        ...state,
+        isLoading: true
+      };
+    case REGISTER + "_FULFILLED":
+      return {
+        ...state,
+        ...INITIAL_STATE,
+        data: action.payload.data.user,
+        access_token: action.payload.data.access_token,
+        isLoggedIn: true
+      };
+    case REGISTER + "_REJECTED":
+      return {
+        ...state,
+        ...INITIAL_STATE
+      };
     case LOGOUT:
       return {
         ...state,

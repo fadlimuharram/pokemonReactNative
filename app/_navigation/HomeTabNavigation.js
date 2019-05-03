@@ -4,15 +4,27 @@ import { createMaterialBottomTabNavigator } from "react-navigation-material-bott
 import Pokemons from "../enhance/Pokemons";
 import NewPokemon from "../enhance/NewPokmon";
 import Profile from "../enhance/Profile";
+import { LogoIcon, PokemonEgg, ProfileIcon } from "../assets/svg";
+import BottomTabNav from "../components/BottomTabNav";
 
-export default createMaterialBottomTabNavigator({
-  List: {
-    screen: Pokemons
+export default createBottomTabNavigator(
+  {
+    List: {
+      screen: Pokemons
+    },
+    New: {
+      screen: NewPokemon
+    },
+    Profile: {
+      screen: Profile
+    }
   },
-  New: {
-    screen: NewPokemon
-  },
-  Profile: {
-    screen: Profile
+  {
+    tabBarComponent: props => <BottomTabNav {...props} />,
+    headerMode: "none",
+    navigationOptions: {
+      headerVisible: false,
+      header: null
+    }
   }
-});
+);

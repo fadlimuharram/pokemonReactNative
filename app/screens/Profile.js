@@ -14,7 +14,8 @@ import {
   Item,
   Label,
   Input,
-  Button
+  Button,
+  Picker
 } from "native-base";
 import LinearGradient from "react-native-linear-gradient";
 import { api_picture } from "react-native-dotenv";
@@ -22,19 +23,45 @@ import { LogoutIcon, CameraIcon } from "../assets/svg";
 import ImagePicker from "react-native-image-picker";
 import Loading from "../components/Loading";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-
+import StatusBarCustom from "../components/StatusBarCustom";
 class Profile extends React.Component {
+  state = {
+    selectedTheme: []
+  };
+
+  componentDidMount() {
+    this.setState({
+      selectedTheme: this.props.theme
+    });
+  }
+
   toLogout = () => {
     this.props.logout();
+  };
+
+  renderTheme = () => {
+    return this.props.listMapTheme.map(val => {
+      return <Picker.Item label={val} value={val} />;
+    });
+  };
+
+  onThemeChange = selectedTheme => {
+    this.setState({
+      selectedTheme
+    });
+    this.props.selectMapTheme(selectedTheme);
   };
 
   render() {
     return (
       <Container>
+        <StatusBarCustom />
         <Content>
           <LinearGradient
             style={styles.content}
-            colors={["#58C7FF", "#4F65B6"]}
+            colors={["#6AA0F8", "#4767EA"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
           >
             <TouchableOpacity style={styles.setting} onPress={this.toLogout}>
               <LogoutIcon size="30" color="white" />
@@ -50,6 +77,20 @@ class Profile extends React.Component {
               <Text style={styles.headerTxt}>{this.props.user.username}</Text>
             </View>
           </LinearGradient>
+        </Content>
+        <Content>
+          <View style={styles.inputContainer}>
+            <Text style={styles.txtInput}>Theme</Text>
+            <Picker
+              mode="dropdown"
+              style={[styles.inputTxt, styles.pickerStyle]}
+              selectedValue={this.state.selectedTheme}
+              onValueChange={this.onThemeChange}
+            >
+              <Picker.Item label="select Theme" value={0} />
+              {this.renderTheme()}
+            </Picker>
+          </View>
         </Content>
       </Container>
     );
@@ -121,5 +162,26 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     marginTop: 20
+  },
+  inputContainer: {
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: "#F8F9FA",
+    padding: 10
+  },
+  txtInput: {
+    color: "black",
+    fontSize: 15,
+    marginLeft: 5
+  },
+  inputTxt: {
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  pickerStyle: {
+    marginTop: 10,
+    marginBottom: 10
   }
 });
